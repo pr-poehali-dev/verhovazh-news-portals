@@ -60,6 +60,8 @@ const Index = () => {
   const [newComment, setNewComment] = useState('');
   const [activeTab, setActiveTab] = useState('news');
   const [showAbout, setShowAbout] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
   const newsData: News[] = [
     {
@@ -171,11 +173,16 @@ const Index = () => {
   };
 
   const handleRegister = () => {
+    if (!privacyAccepted) {
+      alert('Необходимо принять условия обработки персональных данных');
+      return;
+    }
     if (registerName && registerEmail && registerPassword) {
       setCurrentUser({ id: Math.random().toString(), name: registerName, email: registerEmail });
       setRegisterName('');
       setRegisterEmail('');
       setRegisterPassword('');
+      setPrivacyAccepted(false);
     } else {
       alert('Заполните все поля');
     }
@@ -371,6 +378,29 @@ const Index = () => {
                             value={registerPassword}
                             onChange={(e) => setRegisterPassword(e.target.value)}
                           />
+                        </div>
+                        <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg">
+                          <input
+                            type="checkbox"
+                            id="privacy-checkbox"
+                            checked={privacyAccepted}
+                            onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                            className="mt-1 cursor-pointer"
+                          />
+                          <label htmlFor="privacy-checkbox" className="text-xs text-muted-foreground cursor-pointer">
+                            Я согласен на{' '}
+                            <button
+                              type="button"
+                              className="text-primary hover:underline"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setShowPrivacy(true);
+                              }}
+                            >
+                              обработку персональных данных
+                            </button>
+                            {' '}и принимаю условия политики конфиденциальности
+                          </label>
                         </div>
                         <Button onClick={handleRegister} className="w-full">
                           Зарегистрироваться
@@ -712,6 +742,166 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={showPrivacy} onOpenChange={setShowPrivacy}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-heading text-3xl">Политика конфиденциальности</DialogTitle>
+            <DialogDescription>
+              Обработка и защита персональных данных пользователей
+            </DialogDescription>
+          </DialogHeader>
+          <ScrollArea className="h-[60vh] pr-4">
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">1. Общие положения</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей 
+                  новостного портала «Верховажский Вестник» (далее — Портал). Администрация Портала обязуется соблюдать 
+                  конфиденциальность персональных данных в соответствии с Федеральным законом № 152-ФЗ «О персональных данных».
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">2. Собираемые данные</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  При регистрации и использовании Портала мы собираем следующие персональные данные:
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                  <li>Имя и фамилия</li>
+                  <li>Адрес электронной почты</li>
+                  <li>Дата и время регистрации</li>
+                  <li>IP-адрес и данные об устройстве</li>
+                  <li>Информация о действиях на Портале (публикации, комментарии, обсуждения)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">3. Цели обработки данных</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  Персональные данные используются для следующих целей:
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                  <li>Регистрация и авторизация пользователей</li>
+                  <li>Обеспечение функционирования Портала</li>
+                  <li>Модерация контента и предотвращение нарушений</li>
+                  <li>Связь с пользователями по вопросам работы Портала</li>
+                  <li>Улучшение качества сервисов и пользовательского опыта</li>
+                  <li>Соблюдение требований законодательства РФ</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">4. Правовые основания обработки</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Обработка персональных данных осуществляется на основании:
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground mt-2">
+                  <li>Согласия пользователя на обработку персональных данных</li>
+                  <li>Необходимости исполнения договора (пользовательского соглашения)</li>
+                  <li>Требований законодательства Российской Федерации</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">5. Защита персональных данных</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Администрация Портала принимает необходимые организационные и технические меры для защиты персональных данных 
+                  от неправомерного доступа, уничтожения, изменения, блокирования, копирования, распространения, а также 
+                  от иных неправомерных действий. Применяются современные методы шифрования, контроля доступа и защиты информации.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">6. Передача данных третьим лицам</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Персональные данные пользователей не передаются третьим лицам, за исключением случаев:
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground mt-2">
+                  <li>Получения согласия пользователя</li>
+                  <li>Требования законодательства РФ и запросов уполномоченных государственных органов</li>
+                  <li>Необходимости защиты прав и законных интересов Портала или третьих лиц</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">7. Срок хранения данных</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Персональные данные хранятся в течение срока, необходимого для достижения целей обработки, 
+                  но не менее периода, установленного законодательством РФ. После достижения целей обработки или 
+                  отзыва согласия пользователя данные удаляются или обезличиваются.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">8. Права пользователей</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  Пользователь имеет право:
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                  <li>Получать информацию о обработке своих персональных данных</li>
+                  <li>Требовать уточнения, блокирования или удаления персональных данных</li>
+                  <li>Отозвать согласие на обработку персональных данных</li>
+                  <li>Обжаловать действия Администрации в уполномоченный орган по защите прав субъектов персональных данных</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">9. Использование cookies</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Портал использует технологию cookies для обеспечения функционирования сайта, сохранения пользовательских 
+                  настроек и улучшения качества сервиса. Пользователь может настроить свой браузер для отказа от использования 
+                  cookies, однако это может ограничить функциональность Портала.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-heading font-bold text-lg mb-2">10. Изменение Политики</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Администрация Портала оставляет за собой право вносить изменения в настоящую Политику конфиденциальности. 
+                  Новая редакция вступает в силу с момента её размещения на Портале. Продолжение использования Портала после 
+                  внесения изменений означает согласие с новой редакцией Политики.
+                </p>
+              </div>
+
+              <div className="bg-primary/10 p-4 rounded-lg">
+                <h3 className="font-heading font-bold text-lg mb-2">11. Контактная информация</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  По вопросам обработки персональных данных обращайтесь:
+                </p>
+                <div className="space-y-2 text-sm">
+                  <p><strong>Email:</strong> privacy@verhovag-vestnik.ru</p>
+                  <p><strong>Телефон:</strong> +7 (800) 123-45-67</p>
+                  <p><strong>Адрес:</strong> с. Верховажье, ул. Центральная, 1</p>
+                </div>
+              </div>
+
+              <div className="text-xs text-muted-foreground text-center pt-4 border-t">
+                <p>Дата последнего обновления: 29 октября 2025 года</p>
+                <p className="mt-1">© 2025 Верховажский Вестник. Все права защищены.</p>
+              </div>
+            </div>
+          </ScrollArea>
+          <div className="flex gap-3 pt-4 border-t">
+            <Button 
+              onClick={() => setShowPrivacy(false)} 
+              variant="outline"
+              className="flex-1"
+            >
+              Закрыть
+            </Button>
+            <Button 
+              onClick={() => {
+                setPrivacyAccepted(true);
+                setShowPrivacy(false);
+              }}
+              className="flex-1"
+            >
+              Принимаю условия
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={showAbout} onOpenChange={setShowAbout}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -916,7 +1106,12 @@ const Index = () => {
                 >
                   О нас
                 </div>
-                <div className="hover:text-white cursor-pointer transition-colors">Контакты</div>
+                <div 
+                  className="hover:text-white cursor-pointer transition-colors"
+                  onClick={() => setShowPrivacy(true)}
+                >
+                  Политика конфиденциальности
+                </div>
               </div>
             </div>
           </div>
