@@ -44,6 +44,17 @@ interface Comment {
   date: string;
 }
 
+interface Newspaper {
+  id: string;
+  issue: string;
+  date: string;
+  year: string;
+  coverImage: string;
+  pdfUrl: string;
+  pageCount: number;
+  fileSize: string;
+}
+
 const Index = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
@@ -62,6 +73,9 @@ const Index = () => {
   const [showAbout, setShowAbout] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [showArchive, setShowArchive] = useState(false);
+  const [selectedNewspaper, setSelectedNewspaper] = useState<Newspaper | null>(null);
+  const [archiveYear, setArchiveYear] = useState('2025');
 
   const newsData: News[] = [
     {
@@ -138,6 +152,89 @@ const Index = () => {
       commentsCount: 23,
       excerpt: 'Идет обсуждение строительства нового торгового центра. Поделитесь своим мнением.',
       status: 'approved'
+    }
+  ];
+
+  const newspapersData: Newspaper[] = [
+    {
+      id: '1',
+      issue: '№ 43 (1234)',
+      date: '25 октября 2025',
+      year: '2025',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/9cd1ccb7-c88f-4bbe-a370-3e48d7b45f90.jpg',
+      pdfUrl: '#',
+      pageCount: 8,
+      fileSize: '4.2 МБ'
+    },
+    {
+      id: '2',
+      issue: '№ 42 (1233)',
+      date: '18 октября 2025',
+      year: '2025',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/02bf1d4b-b4f9-4a4f-ad34-850c6f96b84f.jpg',
+      pdfUrl: '#',
+      pageCount: 8,
+      fileSize: '3.8 МБ'
+    },
+    {
+      id: '3',
+      issue: '№ 41 (1232)',
+      date: '11 октября 2025',
+      year: '2025',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/9cd1ccb7-c88f-4bbe-a370-3e48d7b45f90.jpg',
+      pdfUrl: '#',
+      pageCount: 8,
+      fileSize: '4.5 МБ'
+    },
+    {
+      id: '4',
+      issue: '№ 40 (1231)',
+      date: '4 октября 2025',
+      year: '2025',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/02bf1d4b-b4f9-4a4f-ad34-850c6f96b84f.jpg',
+      pdfUrl: '#',
+      pageCount: 8,
+      fileSize: '4.0 МБ'
+    },
+    {
+      id: '5',
+      issue: '№ 39 (1230)',
+      date: '27 сентября 2025',
+      year: '2025',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/9cd1ccb7-c88f-4bbe-a370-3e48d7b45f90.jpg',
+      pdfUrl: '#',
+      pageCount: 8,
+      fileSize: '3.9 МБ'
+    },
+    {
+      id: '6',
+      issue: '№ 38 (1229)',
+      date: '20 сентября 2025',
+      year: '2025',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/02bf1d4b-b4f9-4a4f-ad34-850c6f96b84f.jpg',
+      pdfUrl: '#',
+      pageCount: 8,
+      fileSize: '4.1 МБ'
+    },
+    {
+      id: '7',
+      issue: '№ 52 (1190)',
+      date: '28 декабря 2024',
+      year: '2024',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/9cd1ccb7-c88f-4bbe-a370-3e48d7b45f90.jpg',
+      pdfUrl: '#',
+      pageCount: 12,
+      fileSize: '5.2 МБ'
+    },
+    {
+      id: '8',
+      issue: '№ 51 (1189)',
+      date: '21 декабря 2024',
+      year: '2024',
+      coverImage: 'https://cdn.poehali.dev/projects/a6ed1518-adbc-468c-a8b4-b234e735f104/files/02bf1d4b-b4f9-4a4f-ad34-850c6f96b84f.jpg',
+      pdfUrl: '#',
+      pageCount: 8,
+      fileSize: '3.7 МБ'
     }
   ];
 
@@ -253,6 +350,13 @@ const Index = () => {
                 onClick={() => setActiveTab('discussions')}
               >
                 Обсуждения
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="text-white hover:bg-white/10"
+                onClick={() => setShowArchive(true)}
+              >
+                Архив газет
               </Button>
               <Button 
                 variant="ghost" 
@@ -742,6 +846,179 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={showArchive} onOpenChange={setShowArchive}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-heading text-3xl flex items-center gap-3">
+              <Icon name="Archive" className="text-primary" size={32} />
+              Архив газет
+            </DialogTitle>
+            <DialogDescription>
+              Печатные выпуски «Верховажского Вестника» в PDF-формате
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            <div className="flex items-center gap-4 flex-wrap">
+              <Label className="font-heading font-semibold">Выберите год:</Label>
+              <div className="flex gap-2">
+                {['2025', '2024', '2023'].map((year) => (
+                  <Button
+                    key={year}
+                    variant={archiveYear === year ? 'default' : 'outline'}
+                    onClick={() => setArchiveYear(year)}
+                    size="sm"
+                  >
+                    {year}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {newspapersData
+                .filter(newspaper => newspaper.year === archiveYear)
+                .map((newspaper, index) => (
+                  <Card 
+                    key={newspaper.id}
+                    className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in border-0 shadow-lg"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div 
+                      className="relative h-72 overflow-hidden cursor-pointer group"
+                      onClick={() => setSelectedNewspaper(newspaper)}
+                    >
+                      <img 
+                        src={newspaper.coverImage} 
+                        alt={newspaper.issue}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                        <Button 
+                          size="sm"
+                          className="bg-white text-primary hover:bg-white/90"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedNewspaper(newspaper);
+                          }}
+                        >
+                          <Icon name="Eye" className="mr-2" size={16} />
+                          Читать онлайн
+                        </Button>
+                      </div>
+                      <Badge className="absolute top-4 right-4 bg-primary text-white border-0">
+                        {newspaper.issue}
+                      </Badge>
+                    </div>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="font-heading text-base">{newspaper.issue}</CardTitle>
+                      <CardDescription className="text-xs">{newspaper.date}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                        <div className="flex items-center gap-1">
+                          <Icon name="FileText" size={12} />
+                          <span>{newspaper.pageCount} стр.</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Icon name="HardDrive" size={12} />
+                          <span>{newspaper.fileSize}</span>
+                        </div>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => {
+                          alert(`Скачивание ${newspaper.issue}...\nВ полной версии здесь будет ссылка на PDF-файл`);
+                        }}
+                      >
+                        <Icon name="Download" className="mr-2" size={14} />
+                        Скачать PDF
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+
+            {newspapersData.filter(n => n.year === archiveYear).length === 0 && (
+              <div className="text-center py-12">
+                <Icon name="Archive" className="mx-auto text-muted-foreground mb-4" size={48} />
+                <p className="text-muted-foreground">Газет за {archiveYear} год пока нет в архиве</p>
+              </div>
+            )}
+
+            <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-lg">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon name="Info" className="text-primary" size={24} />
+                </div>
+                <div>
+                  <h4 className="font-heading font-semibold mb-2">Как читать газеты?</h4>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Нажмите на обложку для просмотра онлайн</li>
+                    <li>• Используйте кнопку «Скачать PDF» для сохранения на устройство</li>
+                    <li>• Все выпуски доступны бесплатно</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!selectedNewspaper} onOpenChange={() => setSelectedNewspaper(null)}>
+        <DialogContent className="max-w-5xl max-h-[90vh]">
+          {selectedNewspaper && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="font-heading text-2xl flex items-center justify-between">
+                  <span>{selectedNewspaper.issue}</span>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      alert(`Скачивание ${selectedNewspaper.issue}...`);
+                    }}
+                  >
+                    <Icon name="Download" className="mr-2" size={16} />
+                    Скачать
+                  </Button>
+                </DialogTitle>
+                <DialogDescription>
+                  {selectedNewspaper.date} • {selectedNewspaper.pageCount} страниц • {selectedNewspaper.fileSize}
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="relative bg-muted/30 rounded-lg overflow-hidden" style={{ height: '70vh' }}>
+                <img 
+                  src={selectedNewspaper.coverImage}
+                  alt={selectedNewspaper.issue}
+                  className="w-full h-full object-contain"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/5">
+                  <div className="bg-white/95 backdrop-blur-sm p-6 rounded-lg shadow-xl text-center max-w-md">
+                    <Icon name="FileText" className="mx-auto mb-4 text-primary" size={48} />
+                    <h3 className="font-heading font-bold text-xl mb-2">Просмотр газеты</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      В полной версии здесь будет интерактивный просмотрщик PDF с возможностью перелистывания страниц, масштабирования и поиска по тексту.
+                    </p>
+                    <Button
+                      onClick={() => {
+                        alert(`Скачивание ${selectedNewspaper.issue}...`);
+                      }}
+                      className="w-full"
+                    >
+                      <Icon name="Download" className="mr-2" size={16} />
+                      Скачать газету (PDF)
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={showPrivacy} onOpenChange={setShowPrivacy}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -1100,6 +1377,12 @@ const Index = () => {
               <div className="space-y-2 text-sm text-white/80">
                 <div className="hover:text-white cursor-pointer transition-colors">Новости</div>
                 <div className="hover:text-white cursor-pointer transition-colors">Обсуждения</div>
+                <div 
+                  className="hover:text-white cursor-pointer transition-colors"
+                  onClick={() => setShowArchive(true)}
+                >
+                  Архив газет
+                </div>
                 <div 
                   className="hover:text-white cursor-pointer transition-colors"
                   onClick={() => setShowAbout(true)}
