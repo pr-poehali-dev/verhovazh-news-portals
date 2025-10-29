@@ -59,6 +59,7 @@ const Index = () => {
   const [newDiscussionText, setNewDiscussionText] = useState('');
   const [newComment, setNewComment] = useState('');
   const [activeTab, setActiveTab] = useState('news');
+  const [showAbout, setShowAbout] = useState(false);
 
   const newsData: News[] = [
     {
@@ -249,6 +250,7 @@ const Index = () => {
               <Button 
                 variant="ghost" 
                 className="text-white hover:bg-white/10"
+                onClick={() => setShowAbout(true)}
               >
                 О нас
               </Button>
@@ -710,6 +712,173 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={showAbout} onOpenChange={setShowAbout}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-heading text-3xl">О нас</DialogTitle>
+            <DialogDescription>
+              Новостной портал Верховажского района
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-lg">
+              <h3 className="font-heading font-bold text-xl mb-3">Наша миссия</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                «Верховажский Вестник» — современный информационный портал, созданный для жителей и гостей Верховажского района. 
+                Наша цель — держать вас в курсе всех важных событий, создавать площадку для диалога и укреплять связи внутри местного сообщества.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-heading font-bold text-xl mb-4">Что мы делаем</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="border-l-4 border-l-primary">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <Icon name="Newspaper" size={20} className="text-primary" />
+                      Актуальные новости
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      Освещаем события района: культура, спорт, образование, социальная жизнь и важные объявления.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-secondary">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <Icon name="MessageSquare" size={20} className="text-secondary" />
+                      Площадка для обсуждений
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      Даем возможность жителям высказывать мнения, обсуждать важные вопросы и находить решения вместе.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-accent">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <Icon name="Users" size={20} className="text-accent" />
+                      Сообщество
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      Объединяем людей, помогаем организовывать мероприятия и поддерживаем местные инициативы.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-primary">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <Icon name="Shield" size={20} className="text-primary" />
+                      Модерация контента
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      Следим за качеством публикаций и создаем комфортную среду для конструктивного общения.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div className="bg-muted/50 p-6 rounded-lg">
+              <h3 className="font-heading font-bold text-xl mb-4">Редакция</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <Avatar className="w-12 h-12">
+                    <AvatarFallback className="bg-primary text-white">АР</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-semibold">Администрация района</p>
+                    <p className="text-sm text-muted-foreground">Официальные новости и объявления</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Avatar className="w-12 h-12">
+                    <AvatarFallback className="bg-secondary text-white">Р</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-semibold">Редакция портала</p>
+                    <p className="text-sm text-muted-foreground">Новости, репортажи, интервью</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-heading font-bold text-xl mb-4 flex items-center gap-2">
+                <Icon name="Mail" size={24} className="text-primary" />
+                Контактная информация
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Icon name="Mail" size={20} className="text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Email</p>
+                      <p className="font-medium">info@verhovag-vestnik.ru</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                      <Icon name="Phone" size={20} className="text-secondary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Телефон</p>
+                      <p className="font-medium">+7 (800) 123-45-67</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                      <Icon name="MapPin" size={20} className="text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Адрес</p>
+                      <p className="font-medium">с. Верховажье, ул. Центральная, 1</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Icon name="Clock" size={20} className="text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Режим работы</p>
+                      <p className="font-medium">Пн-Пт: 9:00 - 18:00</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-primary to-accent p-6 rounded-lg text-white">
+              <h3 className="font-heading font-bold text-xl mb-2">Присоединяйтесь к нам!</h3>
+              <p className="text-white/90 mb-4">
+                Станьте частью нашего сообщества. Делитесь новостями, участвуйте в обсуждениях и помогайте делать наш район лучше.
+              </p>
+              <Button 
+                className="bg-white text-primary hover:bg-white/90"
+                onClick={() => setShowAbout(false)}
+              >
+                Начать
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <footer className="bg-primary text-white mt-20 py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -741,7 +910,12 @@ const Index = () => {
               <div className="space-y-2 text-sm text-white/80">
                 <div className="hover:text-white cursor-pointer transition-colors">Новости</div>
                 <div className="hover:text-white cursor-pointer transition-colors">Обсуждения</div>
-                <div className="hover:text-white cursor-pointer transition-colors">О нас</div>
+                <div 
+                  className="hover:text-white cursor-pointer transition-colors"
+                  onClick={() => setShowAbout(true)}
+                >
+                  О нас
+                </div>
                 <div className="hover:text-white cursor-pointer transition-colors">Контакты</div>
               </div>
             </div>
